@@ -7,7 +7,7 @@ class Product {
     }
 
     addToBasket() {
-        console.log('Product with name ${this.name} has been added to the basket');
+        console.log(`Product with name ${this.name} has been added to the basket`);
     }
 }
 
@@ -24,6 +24,7 @@ class Grocerie extends Product {
     }
 }
 
+
 function productFactory(item) {
     if (item.category === 'shoe') {
         return new Shoe(item.name, item.amount, item.image);
@@ -32,21 +33,42 @@ function productFactory(item) {
     }
 }
 
+
 class Basket {
     products = [];
 
     add(product) {
-
         product.time = new Date().toLocaleTimeString();
         product.addToBasket();
         this.products.push(product);
+        this.showBasket();
+    }
+
+    
+    remove(index) {
+        const product = this.products[index];
+        this.products.splice(index, 1);
+        product.amount = product.amount + 1;
+        this.showBasket();
+        store.showProducts();
+    }
+
+    
+    showBasket() {
         const basketDiv = document.getElementById('basket');
-        basketDiv.innerHTML += `
-            <div class="basket-item">
-                <b>${product.name}</b> (${product.category})<br>
-                <small>Час додавання: ${product.time}</small>
-            </div>
-        `;
+        basketDiv.innerHTML = '';
+
+        for (let i = 0; i < this.products.length; i++) {
+            const item = this.products[i];
+
+            basketDiv.innerHTML += `
+                <div class="basket-item">
+                    <b>${item.name}</b> (${item.category})<br>
+                    <small>Час додавання: ${item.time}</small><br>
+                    <button onclick="store.basket.remove(${i})">Видалити</button>
+                </div>
+            `;
+        }
     }
 }
 
@@ -68,21 +90,26 @@ class Store {
     moveProductToBasket(index) {
         const product = this.products[index];
 
-        // Перевіряємо, чи товар ще є в наявності
         if (product.amount > 0) {
-            product.amount = product.amount - 1; 
-            this.basket.add(product);            
-            this.showProducts();                 
+            product.amount = product.amount - 1;
+            this.basket.add(product);
+            this.showProducts();
         }
     }
 
+    
     showProducts() {
         const productsDiv = document.getElementById('products');
-        productsDiv.innerHTML = ''; 
+        productsDiv.innerHTML = '';
 
         for (let i = 0; i < this.products.length; i++) {
             const item = this.products[i];
-            const disabledAttr = item.amount === 0 ? 'disabled' : '';
+
+            // Звичайна перевірка: якщо товару 0, блокуємо кнопку
+            let stan = '';
+            if (item.amount === 0) {
+                stan = 'disabled';
+            }
 
             productsDiv.innerHTML += `
                 <div class="card">
@@ -90,7 +117,7 @@ class Store {
                     <h3>${item.name}</h3>
                     <p>Категорія: ${item.category}</p>
                     <p>Залишилось: <b>${item.amount}</b> шт.</p>
-                    <button onclick="store.moveProductToBasket(${i})" ${disabledAttr}>
+                    <button onclick="store.moveProductToBasket(${i})" ${stan}>
                         Додати в кошик
                     </button>
                 </div>

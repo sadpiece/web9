@@ -3,24 +3,24 @@
         "name": "Кросівки Nike",
         "category": "shoe",
         "amount": 3,
-        "image": "https://placehold.co/200x140?text=Nike"
+        "image": "images/nike.jpg"
     },
     {
         "name": "Черевики зимові",
         "category": "shoe",
         "amount": 2,
-        "image": "https://placehold.co/200x140?text=Boots"
+        "image": "images/winter.jpg"
     },
     {
         "name": "Хліб білий",
         "category": "grocerie",
         "amount": 5,
-        "image": "https://placehold.co/200x140?text=Bread"
+        "image": "images/bread.jpg"
     },
     {
         "name": "Молоко 2.5%",
         "category": "grocerie",
         "amount": 4,
-        "image": "https://placehold.co/200x140?text=Milk"
+        "image": "images/milk.jpg"
     }
 ]
